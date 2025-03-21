@@ -2,7 +2,7 @@
 version: '3.8'
 
 services:
-  # Frontend React application
+  # Frontend React application with Caddy
   app:
     build: .
     ports:

@@ -1,0 +1,25 @@
+
+{
+    # Global options
+    auto_https off
+}
+
+:80 {
+    # Root directory for static files
+    root * /usr/share/caddy
+    
+    # Enable file compression
+    encode gzip zstd
+    
+    # Cache static assets
+    @static {
+        path *.jpg *.jpeg *.png *.gif *.ico *.css *.js
+    }
+    header @static Cache-Control "public, max-age=2592000"
+    
+    # Handle SPA routing - try files first, then fallback to index.html
+    try_files {path} /index.html
+    
+    # Enable file server
+    file_server
+}

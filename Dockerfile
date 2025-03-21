@@ -18,17 +18,17 @@ COPY . .
 # Build the app
 RUN npm run build
 
-# Use lightweight nginx image
-FROM nginx:alpine AS runner
+# Use lightweight Caddy image
+FROM caddy:2-alpine AS runner
 
 # Copy built assets from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/caddy
 
-# Copy custom nginx config
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy custom Caddy config
+COPY ./Caddyfile /etc/caddy/Caddyfile
 
 # Expose port
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Caddy
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]

@@ -7,6 +7,7 @@ A minimalist, elegant starter template with Docker and self-hosted Supabase inte
 
 - 🐳 Docker and Docker Compose setup for easy deployment
 - 🔒 Self-hosted Supabase integration
+- 🚀 Caddy web server for simpler configuration and better performance
 - 🎨 Beautiful, Apple-inspired minimalist UI
 - ✨ Smooth animations and transitions
 - 📱 Fully responsive design
@@ -71,7 +72,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 │   └── main.tsx          # Application entry point
 ├── docker-compose.yml    # Docker Compose configuration
 ├── Dockerfile            # Docker configuration
-├── nginx/                # Nginx configuration
+├── Caddyfile             # Caddy web server configuration
 └── ...                   # Other configuration files
 ```
 

@@ -1,0 +1,57 @@
+
+version: '3.8'
+
+services:
+  # Frontend React application
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - supabase-db
+      - supabase-api
+    environment:
+      - VITE_SUPABASE_URL=http://supabase-api:8000
+      - VITE_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    networks:
+      - app-network
+
+  # Supabase PostgreSQL database
+  supabase-db:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Supabase API - using the official Supabase image
+  supabase-api:
+    image: supabase/supabase-local:latest
+    depends_on:
+      - supabase-db
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_HOST: supabase-db
+      POSTGRES_PORT: 5432
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      STUDIO_PORT: 8000
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
